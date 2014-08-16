@@ -1,4 +1,7 @@
 {
     "name": "sample name",
-    "password": "sample password"
+    "password": "sample password",
+    "target_hosts": [
+        {"hostname": "vagrant", "port": 22}
+    ]
 }

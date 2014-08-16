@@ -20,13 +20,22 @@ func main() {
 		log.Fatalf("Error reading '%s': %s", paths, err)
 	}
 
+	conf = MergeConfig(DefaultConfig(), conf)
+
 	fmt.Println(conf.Name)
 	fmt.Println(conf.Password)
+	fmt.Println(conf.TargetHosts)
+}
+
+type HostConfig struct {
+	Hostname string
+	Port     int
 }
 
 type Config struct {
-	Name     string `mapstructure:"name"`
-	Password string `mapstructure:"password"`
+	Name        string       `mapstructure:"name"`
+	Password    string       `mapstructure:"password"`
+	TargetHosts []HostConfig `mapstructure:"target_hosts"`
 }
 
 type dirEnts []os.FileInfo
@@ -35,6 +44,12 @@ func DefaultConfig() *Config {
 	return &Config{
 		Name:     "vagrant",
 		Password: "vagrant",
+		TargetHosts: []HostConfig{
+			HostConfig{
+				Hostname: "localhost",
+				Port:     22,
+			},
+		},
 	}
 }
 
@@ -74,6 +89,10 @@ func MergeConfig(a, b *Config) *Config {
 	}
 	if b.Password != "" {
 		result.Password = b.Password
+	}
+
+	if b.TargetHosts != nil {
+		result.TargetHosts = b.TargetHosts
 	}
 
 	return &result
