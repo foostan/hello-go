@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
-	"log"
 
 	"github.com/mitchellh/mapstructure"
 )
@@ -48,11 +48,10 @@ func DecodeConfig(r io.Reader) (*Config, error) {
 
 	// Decode
 	var md mapstructure.Metadata
-	msdec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig {
-
-	Metadata: &md,
-	Result:   &result,
-})
+	msdec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{
+		Metadata: &md,
+		Result:   &result,
+	})
 
 	if err != nil {
 		return nil, err
